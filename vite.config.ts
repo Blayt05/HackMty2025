@@ -15,10 +15,10 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt'],
+      includeAssets: ['tarjeta-de-credito.ico', 'robots.txt'],
       manifest: {
-        name: 'SmartPay Advisor',
-        short_name: 'SmartPay',
+        name: 'SmartWallet Advisor',
+        short_name: 'SmartWallet',
         description: 'Tu asistente financiero personal para gestionar tarjetas de crédito',
         theme_color: '#0066FF',
         background_color: '#F8FAFC',

@@ -112,69 +112,9 @@ const AddCard = () => {
             />
           </div>
 
-          {/* Saldo actual */}
-          <div className="space-y-2">
-            <Label htmlFor="balance">Saldo actual</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-              <Input
-                id="balance"
-                type="number"
-                placeholder="0.00"
-                value={formData.balance}
-                onChange={(e) => setFormData({ ...formData, balance: e.target.value })}
-                className="h-12 pl-7"
-              />
-            </div>
-          </div>
-
-          {/* Límite de crédito */}
-          <div className="space-y-2">
-            <Label htmlFor="creditLimit">Límite de crédito</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-              <Input
-                id="creditLimit"
-                type="number"
-                placeholder="0.00"
-                value={formData.creditLimit}
-                onChange={(e) => setFormData({ ...formData, creditLimit: e.target.value })}
-                className="h-12 pl-7"
-              />
-            </div>
-          </div>
-
-          {/* Fecha de pago */}
-          <div className="space-y-2">
-            <Label htmlFor="nextPaymentDate">Próxima fecha de pago</Label>
-            <Input
-              id="nextPaymentDate"
-              type="date"
-              value={formData.nextPaymentDate}
-              onChange={(e) => setFormData({ ...formData, nextPaymentDate: e.target.value })}
-              className="h-12"
-            />
-          </div>
-
-          {/* Pago mínimo */}
-          <div className="space-y-2">
-            <Label htmlFor="minimumPayment">Pago mínimo</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-              <Input
-                id="minimumPayment"
-                type="number"
-                placeholder="0.00"
-                value={formData.minimumPayment}
-                onChange={(e) => setFormData({ ...formData, minimumPayment: e.target.value })}
-                className="h-12 pl-7"
-              />
-            </div>
-          </div>
-
           {/* Subir estado de cuenta */}
           <div className="space-y-2">
-            <Label htmlFor="statement">Estado de cuenta (opcional)</Label>
+            <Label htmlFor="statement">Estado de cuenta</Label>
             <div className="border-2 border-dashed border-border rounded-2xl p-6 text-center hover:border-primary transition-colors cursor-pointer">
               <input
                 id="statement"
