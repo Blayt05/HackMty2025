@@ -8,7 +8,7 @@ import { useApp } from '@/contexts/AppContext';
 import { ChevronLeft, Upload, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
 
-const banks = ['BBVA', 'Banorte', 'Santander', 'CitiBanamex', 'HSBC', 'ScotiaBank'];
+const banks = ['BBVA', 'Klar', 'Banorte', 'CitiBanamex', 'HSBC', 'ScotiaBank'];
 
 const AddCard = () => {
   const navigate = useNavigate();
