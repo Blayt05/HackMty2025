@@ -74,8 +74,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const login = async (email: string, password: string): Promise<boolean> => {
     // Simulación de login - en producción conectar a API
-    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]');
-    const account = storedAccounts.find((acc: any) => acc.email === email && acc.password === password);
+    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]') as { email: string; password: string; fullName?: string }[];
+    const account = storedAccounts.find(acc => acc.email === email && acc.password === password);
     
     if (account) {
       setIsAuthenticated(true);
@@ -87,10 +87,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const register = async (email: string, password: string, fullName: string): Promise<boolean> => {
     // Simulación de registro - en producción conectar a API
-    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]');
+    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]') as { email: string; password: string; fullName?: string }[];
     
     // Verificar si el email ya existe
-    if (storedAccounts.some((acc: any) => acc.email === email)) {
+    if (storedAccounts.some(acc => acc.email === email)) {
       return false;
     }
 
