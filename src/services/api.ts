@@ -1,5 +1,6 @@
 // Configuración del endpoint de la API
 const API_BASE_URL = 'http://localhost:9000';
+import { AnalysisResponse, ApiResponse } from '../types/type'; // Asegúrate de ajustar la ruta según tu estructura de carpetas
 
 // Tipos para las peticiones
 interface RegisterData {
@@ -60,33 +61,25 @@ async function apiRequest<T>(
 
 // Endpoints de autenticación
 export const authAPI = {
-  register: async (data: RegisterData) => {
-    return apiRequest('/auth/register', 'POST', data);
-  },
-  
-  login: async (data: LoginData) => {
-    return apiRequest('/auth/login', 'POST', data);
-  },
+  register: async (data: RegisterData) => apiRequest('/auth/register', 'POST', data),
+  login: async (data: LoginData) => apiRequest('/auth/login', 'POST', data),
 };
 
 // Endpoints de perfil de usuario
 export const userAPI = {
-  updateProfile: async (data: UserProfileData) => {
-    return apiRequest('/user/profile', 'POST', data);
-  },
+  updateProfile: async (data: UserProfileData) => apiRequest('/user/profile', 'POST', data),
 };
 
 // Endpoints de tarjetas
 export const cardsAPI = {
-  addCard: async (data: CardData) => {
-    return apiRequest('/cards', 'POST', data);
-  },
-  
-  updateCard: async (id: string, data: Partial<CardData>) => {
-    return apiRequest(`/cards/${id}`, 'PUT', data);
-  },
-  
-  deleteCard: async (id: string) => {
-    return apiRequest(`/cards/${id}`, 'DELETE');
+  addCard: async (data: CardData) => apiRequest('/cards', 'POST', data),
+  updateCard: async (id: string, data: Partial<CardData>) => apiRequest(`/cards/${id}`, 'PUT', data),
+  deleteCard: async (id: string) => apiRequest(`/cards/${id}`, 'DELETE'),
+};
+
+// Nuevo endpoint para análisis
+export const analysisAPI = {
+  runAnalysis: async (fullName: string): Promise<ApiResponse<AnalysisResponse>> => {
+    return apiRequest<AnalysisResponse>('/analysis', 'POST', { fullName });
   },
 };

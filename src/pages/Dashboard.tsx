@@ -1,8 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
-import { Plus, CreditCard as CreditCardIcon, LogOut, TrendingUp, AlertCircle } from 'lucide-react';
+import { Plus, CreditCard as CreditCardIcon, LogOut, TrendingUp, AlertCircle, Activity } from 'lucide-react';
 import { toast } from 'sonner';
+import { analysisAPI } from '../services/api'; // <- Importamos el nuevo endpoint
+
+
+
 
 // Configuración de colores por banco
 const bankColors: Record<string, { gradient: string; logo: string }> = {
@@ -23,6 +27,37 @@ const Dashboard = () => {
     toast.success('Sesión cerrada');
     navigate('/login');
   };
+  const handleAnalysis = async () => {
+  if (!user?.fullName) {
+    toast.error('Usuario no disponible');
+    return;
+  }
+  
+  console.log('Iniciando análisis para:', user.fullName);
+
+  try {
+    const { success, data, error } = await analysisAPI.runAnalysis(user.fullName);
+
+    if (success && data) {
+      toast.success('Análisis completado con éxito');
+      console.log('Resultado del análisis:', data);
+      
+      // Aquí puedes hacer algo con los datos recibidos
+      console.log('Perfil:', data.perfil);
+      console.log('Retroalimentación:', data.retroalimentacion);
+      console.log('Detalle tarjetas:', data.detalle_tarjetas);
+      
+      // Por ejemplo, guardar en estado local
+      // setAnalysisResult(data);
+      
+    } else {
+      toast.error(`Error al hacer análisis: ${error || 'Error desconocido'}`);
+    }
+  } catch (err) {
+    console.error('Error en análisis:', err);
+    toast.error('Error al procesar el análisis');
+  }
+};
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
@@ -35,6 +70,11 @@ const Dashboard = () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
+
+  // Función para el botón "Hacer análisis"
+
+
+  
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -83,10 +123,19 @@ const Dashboard = () => {
         {/* Botón agregar tarjeta */}
         <Button
           onClick={() => navigate('/add-card')}
-          className="w-full h-16 bg-white shadow-lg hover:shadow-xl text-primary font-semibold text-lg mb-6 rounded-2xl"
+          className="w-full h-16 bg-white shadow-lg hover:shadow-xl text-primary font-semibold text-lg mb-4 rounded-2xl"
         >
           <Plus className="w-6 h-6 mr-2" />
           Agregar tarjeta de crédito
+        </Button>
+
+        {/* Botón hacer análisis */}
+        <Button
+          onClick={handleAnalysis}
+          className="w-full h-16 bg-primary text-white shadow-lg hover:shadow-xl font-semibold text-lg mb-6 rounded-2xl flex items-center justify-center gap-2"
+        >
+          <Activity className="w-6 h-6" />
+          Hacer análisis
         </Button>
 
         {/* Lista de tarjetas */}
