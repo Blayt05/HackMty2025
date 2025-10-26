@@ -35,7 +35,7 @@ interface CardData {
 async function apiRequest<T>(
   endpoint: string,
   method: string = 'GET',
-  data?: any
+  data?: unknown
 ): Promise<{ success: boolean; data?: T; error?: string }> {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
