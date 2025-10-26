@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI, userAPI, cardsAPI } from '@/services/api';
 
 // Tipos de datos
 export interface UserProfile {
@@ -60,10 +61,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (storedAuth === 'true') setIsAuthenticated(true);
   }, []);
 
-  // Guardar usuario en localStorage cuando cambia
+  // Guardar usuario en localStorage y enviar a API cuando cambia
   useEffect(() => {
     if (user) {
       localStorage.setItem('smartpay_user', JSON.stringify(user));
+      // Enviar perfil actualizado a API
+      userAPI.updateProfile(user);
     }
   }, [user]);
 
@@ -73,9 +76,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [cards]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulación de login - en producción conectar a API
-    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]') as { email: string; password: string; fullName?: string }[];
-    const account = storedAccounts.find(acc => acc.email === email && acc.password === password);
+    // Enviar a API
+    const apiResponse = await authAPI.login({ email, password });
+    
+    // Validar localmente también
+    type StoredAccount = { email: string; password: string; fullName?: string };
+    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]') as StoredAccount[];
+    const account = storedAccounts.find((acc: StoredAccount) => acc.email === email && acc.password === password);
     
     if (account) {
       setIsAuthenticated(true);
@@ -86,15 +93,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const register = async (email: string, password: string, fullName: string): Promise<boolean> => {
+    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]');
     // Simulación de registro - en producción conectar a API
-    const storedAccounts = JSON.parse(localStorage.getItem('smartpay_accounts') || '[]') as { email: string; password: string; fullName?: string }[];
     
     // Verificar si el email ya existe
     if (storedAccounts.some(acc => acc.email === email)) {
       return false;
     }
 
-    // Crear nueva cuenta
+    // Enviar a API
+    await authAPI.register({ email, password, fullName });
+
+    // Guardar localmente
     const newAccount = { email, password, fullName };
     storedAccounts.push(newAccount);
     localStorage.setItem('smartpay_accounts', JSON.stringify(storedAccounts));
@@ -114,14 +124,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const addCard = (card: CreditCard) => {
+    // Enviar a API
+    cardsAPI.addCard({
+      bank: card.bank,
+      cardName: card.cardName,
+      balance: card.balance,
+      creditLimit: card.creditLimit,
+      nextPaymentDate: card.nextPaymentDate,
+      minimumPayment: card.minimumPayment,
+      interestRate: card.interestRate,
+    });
+    
+    // Guardar localmente
     setCards(prev => [...prev, card]);
   };
 
   const updateCard = (id: string, updatedCard: Partial<CreditCard>) => {
+    // Enviar a API
+    cardsAPI.updateCard(id, updatedCard);
+    
+    // Actualizar localmente
     setCards(prev => prev.map(card => card.id === id ? { ...card, ...updatedCard } : card));
   };
 
   const deleteCard = (id: string) => {
+    // Enviar a API
+    cardsAPI.deleteCard(id);
+    
+    // Eliminar localmente
     setCards(prev => prev.filter(card => card.id !== id));
   };
 
