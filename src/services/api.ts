@@ -1,5 +1,6 @@
 // Configuración del endpoint de la API
-const API_BASE_URL = 'http://localhost:9000';
+// const API_BASE_URL = 'http://localhost:9000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000';
 import { AnalysisResponse, ApiResponse } from '../types/type'; // Asegúrate de ajustar la ruta según tu estructura de carpetas
 
 // Tipos para las peticiones

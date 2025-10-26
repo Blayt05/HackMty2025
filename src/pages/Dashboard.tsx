@@ -308,7 +308,7 @@ const Dashboard = () => {
                     onClick={() => navigate(`/card/${card.id}`)}
                     className="cursor-pointer"
                   >
-                    <div className={`bg-gradient-to-br ${bankConfig.gradient} rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow`}>
+                    <div className={`${card.bankGradient || `bg-gradient-to-br ${bankConfig.gradient}`} rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow`}>
                       <div className="flex justify-between items-start mb-8">
                         <div>
                           <p className="text-white/70 text-sm mb-1">{card.bank}</p>

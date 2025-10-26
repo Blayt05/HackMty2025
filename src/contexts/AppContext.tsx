@@ -19,6 +19,8 @@ export interface CreditCard {
   minimumPayment: number;
   interestRate: number;
   transactions: Transaction[];
+  bankColor?: string;
+  bankGradient?: string;
 }
 
 export interface Transaction {
