@@ -3,6 +3,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000';
 import { AnalysisResponse, ApiResponse } from '../types/type'; // Asegúrate de ajustar la ruta según tu estructura de carpetas
 
+//Cambios
 // Tipos para las peticiones
 interface RegisterData {
   email: string;
